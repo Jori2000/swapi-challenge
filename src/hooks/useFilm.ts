@@ -23,7 +23,7 @@ const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
  * @example
  *   const { data: film, isLoading, error } = useFilm('1');
  */
-export const useFilm = (id: string | null): UseQueryResult<Film, unknown> => {
+export const useFilm = (id: string | null): UseQueryResult<Film, Error> => {
   return useQuery({
     queryKey: ['film', id],
     queryFn: () => getFilm(id!),
@@ -41,7 +41,7 @@ export const useFilm = (id: string | null): UseQueryResult<Film, unknown> => {
  * @example
  *   const { data: films, isLoading } = useFilms();
  */
-export const useFilms = (): UseQueryResult<ApiResponse<Film>, unknown> => {
+export const useFilms = (): UseQueryResult<ApiResponse<Film>, Error> => {
   return useQuery({
     queryKey: ['films'],
     queryFn: () => getFilms(),

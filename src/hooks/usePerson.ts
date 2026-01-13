@@ -17,18 +17,26 @@ const INFINITE = Infinity;
 const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
 
 /**
- * Fetch all people (paginated)
+ * Fetch all people (paginated or searched)
  * @param page - Page number (optional, default: 1)
- * @returns Query result with paginated people
+ * @param search - Search query (optional)
+ * @returns Query result with paginated/searched people
  * @example
  *   const { data: people, isLoading } = usePeople(1);
+ *   const { data: results } = usePeople(undefined, 'luke');
  */
 export const usePeople = (
-  page?: number
+  page?: number,
+  search?: string
 ): UseQueryResult<ApiResponse<Person>, Error> => {
   return useQuery({
-    queryKey: ['people', page],
-    queryFn: () => getPeople(page),
+    queryKey: ['people', page, search],
+    queryFn: () => {
+      if (search && search.trim()) {
+        return searchPeople(search);
+      }
+      return getPeople(page);
+    },
     staleTime: INFINITE,
     gcTime: TWENTY_FOUR_HOURS,
     retry: 1,
