@@ -44,7 +44,7 @@ export const PeoplePage = () => {
 
         {error && (
           <ErrorMessage
-            message={handleApiError(error as Error)}
+            message={handleApiError(error)}
             retry={() => {
               refetch();
             }}

@@ -7,30 +7,28 @@ import { useQuery } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { Planet, ApiResponse } from '../types/swapi';
 import { getPlanet, getPlanets, searchPlanets } from '../api/swapi';
-
-// React Query cache configuration
-/**
- * SWAPI contains static Star Wars data that never changes. It is only the first 7 movies, so:
- * We use aggressive caching to minimize API calls and improve performance.
- */
-const INFINITE = Infinity;
-const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
+import { QUERY_CACHE_CONFIG } from '../constants';
 
 /**
  * Fetch a single planet by ID
+ *
+ * Query automatically disabled when id is null/empty due to enabled flag.
+ * This prevents unnecessary API calls for invalid IDs.
+ *
  * @param id - Planet ID (string). Query disabled if null/empty
  * @returns Query result with planet data
  * @example
  *   const { data: planet, isLoading, error } = usePlanet('1');
+ *   const { data: noData } = usePlanet(null);  // Query disabled
  */
 export const usePlanet = (id: string | null): UseQueryResult<Planet, unknown> => {
   return useQuery({
     queryKey: ['planet', id],
-    queryFn: () => getPlanet(id!),
-    enabled: Boolean(id),
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    queryFn: () => getPlanet(id as string), // Safe: queryFn only called when enabled=true
+    enabled: !!id, // Only enable query when id is truthy
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };
 
@@ -46,9 +44,9 @@ export const usePlanets = (page?: number): UseQueryResult<ApiResponse<Planet>, u
   return useQuery({
     queryKey: ['planets', page],
     queryFn: () => getPlanets(page),
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };
 
@@ -64,8 +62,8 @@ export const usePlanetsSearch = (name: string): UseQueryResult<ApiResponse<Plane
     queryKey: ['planets', 'search', name],
     queryFn: () => searchPlanets(name),
     enabled: name.length > 0,
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };

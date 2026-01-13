@@ -7,30 +7,28 @@ import { useQuery } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { Film, ApiResponse } from '../types/swapi';
 import { getFilm, getFilms, searchFilms } from '../api/swapi';
-
-// React Query cache configuration
-/**
- * SWAPI contains static Star Wars data that never changes. It is only the first 7 movies, so:
- * We use aggressive caching to minimize API calls and improve performance.
- */
-const INFINITE = Infinity;
-const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
+import { QUERY_CACHE_CONFIG } from '../constants';
 
 /**
  * Fetch a single film by ID
+ *
+ * Query automatically disabled when id is null/empty due to enabled flag.
+ * This prevents unnecessary API calls for invalid IDs.
+ *
  * @param id - Film ID (string). Query disabled if null/empty
  * @returns Query result with film data
  * @example
  *   const { data: film, isLoading, error } = useFilm('1');
+ *   const { data: noData } = useFilm(null);  // Query disabled
  */
 export const useFilm = (id: string | null): UseQueryResult<Film, Error> => {
   return useQuery({
     queryKey: ['film', id],
-    queryFn: () => getFilm(id!),
-    enabled: Boolean(id),
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    queryFn: () => getFilm(id as string), // Safe: queryFn only called when enabled=true
+    enabled: !!id, // Only enable query when id is truthy
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };
 
@@ -45,9 +43,9 @@ export const useFilms = (): UseQueryResult<ApiResponse<Film>, Error> => {
   return useQuery({
     queryKey: ['films'],
     queryFn: () => getFilms(),
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };
 
@@ -63,8 +61,8 @@ export const useFilmsSearch = (title: string): UseQueryResult<ApiResponse<Film>,
     queryKey: ['films', 'search', title],
     queryFn: () => searchFilms(title),
     enabled: title.length > 0,
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };

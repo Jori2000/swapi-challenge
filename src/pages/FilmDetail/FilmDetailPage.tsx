@@ -31,7 +31,7 @@ export const FilmDetailPage = () => {
         <Navigation />
         <div className={styles.container}>
           <ErrorMessage
-            message={handleApiError(error as Error)}
+            message={handleApiError(error)}
             retry={() => refetch()}
           />
           <button className={styles.backButton} onClick={() => navigate('/films')}>

@@ -7,14 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { Person, ApiResponse } from '../types/swapi';
 import { getPerson, getPeople, searchPeople } from '../api/swapi';
-
-// React Query cache configuration
-/**
- * SWAPI contains static Star Wars data that never changes. It is only the first 7 movies, so:
- * We use aggressive caching to minimize API calls and improve performance.
- */
-const INFINITE = Infinity;
-const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
+import { QUERY_CACHE_CONFIG } from '../constants';
 
 /**
  * Fetch all people (paginated or searched)
@@ -37,27 +30,32 @@ export const usePeople = (
       }
       return getPeople(page);
     },
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };
 
 /**
  * Fetch a single person by ID
+ *
+ * Query automatically disabled when id is null/empty due to enabled flag.
+ * This prevents unnecessary API calls for invalid IDs.
+ *
  * @param id - Person ID (string). Query disabled if null/empty
  * @returns Query result with person data
  * @example
  *   const { data: person, isLoading, error } = usePerson('1');
+ *   const { data: noData } = usePerson(null);  // Query disabled
  */
 export const usePerson = (id: string | null): UseQueryResult<Person, Error> => {
   return useQuery({
     queryKey: ['person', id],
-    queryFn: () => getPerson(id!),
-    enabled: Boolean(id),
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    queryFn: () => getPerson(id as string), // Safe: queryFn only called when enabled=true
+    enabled: !!id, // Only enable query when id is truthy
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };
 
@@ -73,8 +71,8 @@ export const usePeopleSearch = (name: string): UseQueryResult<ApiResponse<Person
     queryKey: ['people', 'search', name],
     queryFn: () => searchPeople(name),
     enabled: name.length > 0,
-    staleTime: INFINITE,
-    gcTime: TWENTY_FOUR_HOURS,
-    retry: 1,
+    staleTime: QUERY_CACHE_CONFIG.STALE_TIME,
+    gcTime: QUERY_CACHE_CONFIG.GC_TIME,
+    retry: QUERY_CACHE_CONFIG.RETRY_ATTEMPTS,
   });
 };

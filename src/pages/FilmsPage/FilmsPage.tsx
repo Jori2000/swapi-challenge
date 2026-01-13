@@ -29,7 +29,7 @@ export const FilmsPage = () => {
         <Navigation />
         <div className={styles.container}>
           <ErrorMessage
-            message={handleApiError(error as Error)}
+            message={handleApiError(error)}
             retry={() => refetch()}
           />
         </div>
