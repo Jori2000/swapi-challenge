@@ -194,9 +194,9 @@ export async function findPlanets(searchTerm: string): Promise<Planet[] | null> 
  */
 export function demonstrateUrlExtraction(): void {
   const exampleUrls = [
-    'https://swapi.dev/api/people/1/',
-    'https://swapi.dev/api/films/5/',
-    'https://swapi.dev/api/planets/42/',
+    'https://swapi.py4e.com/api//people/1/',
+    'https://swapi.py4e.com/api//films/5/',
+    'https://swapi.py4e.com/api//planets/42/',
   ];
 
   exampleUrls.forEach((url) => {

@@ -8,10 +8,10 @@ import type { Person, Film, Planet, ApiResponse } from '../types/swapi';
 
 /**
  * Extract numeric ID from SWAPI URL
- * @param url - Full SWAPI resource URL (e.g., "https://swapi.dev/api/people/1/")
+ * @param url - Full SWAPI resource URL (e.g., "https://swapi.py4e.com/api//people/1/")
  * @returns Numeric ID as string (e.g., "1")
  * @example
- *   extractIdFromUrl("https://swapi.dev/api/people/5/") // "5"
+ *   extractIdFromUrl("https://swapi.py4e.com/api//people/5/") // "5"
  */
 export const extractIdFromUrl = (url: string): string => {
   const match = url.match(/\/(\d+)\/$/);
