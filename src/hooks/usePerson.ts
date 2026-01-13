@@ -105,7 +105,7 @@ export const usePeopleSearch = (name: string): UseQueryResult<ApiResponse<Person
 export const useInfinitePeople = (): UseInfiniteQueryResult<ApiResponse<Person>, Error> => {
   return useInfiniteQuery({
     queryKey: ['people', 'infinite'],
-    queryFn: ({ pageParam = 1 }) => getPeople(pageParam as number),
+    queryFn: ({ pageParam = 1 }) => typeof pageParam === 'number' ? getPeople(pageParam) : Promise.reject(new Error('Invalid page parameter')),
     getNextPageParam: (lastPage) => {
       // Extract page number from SWAPI's next URL (e.g., ?page=2)
       if (!lastPage.next) return undefined;
