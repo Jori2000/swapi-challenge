@@ -31,13 +31,18 @@ npm install          # Install dependencies
 npm run dev          # Start Vite dev server (http://localhost:5173/)
 npm run build        # Production build to dist/
 npm run preview      # Preview production build
-npm run lint         # Run TypeScript checks
+npm run lint         # Run ESLint checks
+npm run lint:fix     # Auto-fix ESLint issues
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
 ```
 
-### Key Commands
-- Dev server watches for changes - no restart needed
-- TypeScript errors appear in both terminal and IDE
-- Build optimizes with Rollup
+### Code Quality & Formatting
+- **ESLint** (`.eslintrc.json`): Catches bugs, enforces best practices, React/TypeScript rules
+- **Prettier** (`.prettierrc.json`): Auto-formats code (100-char line width, 2-space indents)
+- **eslint-config-prettier**: Disables ESLint rules that conflict with Prettier
+- Run `npm run lint:fix` and `npm run format` before committing
+- IDE Extensions recommended: ESLint + Prettier (auto-format on save)
 
 ## Coding Conventions
 
@@ -89,10 +94,59 @@ npm run lint         # Run TypeScript checks
 
 ## Dependencies
 - **react** & **react-dom** - UI framework
+- **react-router-dom** - Client-side routing
+- **@tanstack/react-query** - Server state management and caching
+- **axios** - HTTP client for API requests
 - **vite** - Build tool and dev server
 - **typescript** - Type safety
-- Add routing with: `npm install react-router-dom`
-- Add HTTP client: `npm install axios` or use `fetch`
+
+### Using React Router
+```tsx
+// src/router/routes.tsx
+import { createBrowserRouter } from 'react-router-dom'
+import { HomePage } from '../pages/HomePage'
+
+export const router = createBrowserRouter([
+  { path: '/', element: <HomePage /> },
+  { path: '/character/:id', element: <CharacterPage /> },
+])
+```
+
+### Using React Query
+```tsx
+import { useQuery } from '@tanstack/react-query'
+import { fetchCharacter } from '../api/swapi'
+
+export const useCharacter = (id: string) => {
+  return useQuery({
+    queryKey: ['character', id],
+    queryFn: () => fetchCharacter(id),
+  })
+}
+```
+
+### Using Axios
+```tsx
+// src/api/swapi.ts
+import axios from 'axios'
+
+const baseURL = import.meta.env.VITE_SWAPI_BASE_URL
+
+const swapiClient = axios.create({ baseURL })
+
+export const fetchCharacter = async (id: string) => {
+  const { data } = await swapiClient.get(`/people/${id}/`)
+  return data
+}
+```
+
+## Environment Variables
+- **Configuration**: `.env` file at project root (add to `.gitignore`)
+- **Example file**: `.env.example` with template values
+- **Access in code**: `import.meta.env.VITE_SWAPI_BASE_URL`
+- **Prefix requirement**: All Vite env vars must start with `VITE_`
+- **Type safety**: See `src/vite-env.d.ts` for env var types
+
 
 ## Common Tasks
 
@@ -115,10 +169,11 @@ npm run lint         # Run TypeScript checks
 4. Keep components small and focused
 
 ## Environment & Build
-- **Dev**: Instant HMR reload on save
+- **Dev**: Instant HMR reload on save (http://localhost:5173/)
 - **Production**: `npm run build` creates optimized dist/ folder
-- Environment variables: Use `.env` file (add to `.gitignore`)
-- TypeScript checks run during build
+- **Environment variables**: Define in `.env` (copy from `.env.example`)
+- **Type-safe env access**: `import.meta.env.VITE_*` with type hints in `vite-env.d.ts`
+- **TypeScript checks**: Run during build and in IDE
 
 ## Debugging
 - Browser DevTools with React DevTools extension

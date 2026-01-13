@@ -1,73 +1,97 @@
-# React + TypeScript + Vite
+# SWAPI Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ein Senior-Level React + TypeScript + Vite Projekt mit der Star Wars API.
 
-Currently, two official plugins are available:
+## Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# Setup
+npm install
+cp .env.example .env
 
-## React Compiler
+# Development
+npm run dev          # http://localhost:5173/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Code Quality
+npm run lint         # Check quality issues
+npm run lint:fix     # Auto-fix issues
+npm run format       # Auto-format code
+npm run format:check # Check formatting without changing
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Build
+npm run build        # Production build
+npm run preview      # Preview production build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── api/          # SWAPI API client functions
+├── components/   # Reusable React components
+├── hooks/        # Custom React hooks
+├── pages/        # Page-level components
+├── types/        # TypeScript interfaces
+├── router/       # Routing configuration
+├── assets/       # Images, fonts
+├── App.tsx       # Root component
+└── main.tsx      # Entry point
+```
+
+## Key Technologies
+
+- **React 19** - UI framework with hooks
+- **TypeScript** - Strict type checking
+- **Vite** - Fast build tool & dev server
+- **React Router** - Client-side routing
+- **React Query** - Server state management
+- **Axios** - HTTP client
+- **ESLint + Prettier** - Code quality & formatting
+
+## Code Quality
+
+This project uses:
+- **ESLint**: Catches bugs, enforces best practices
+- **Prettier**: Automatic code formatting (100-char line width)
+- **TypeScript Strict Mode**: All type checking enabled
+
+Both are configured to work together without conflicts. See `docs/ESLINT_PRETTIER_SETUP.md` for details.
+
+## IDE Setup (Recommended)
+
+VS Code extensions:
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+Settings are pre-configured in `.vscode/settings.json`:
+- Format on save enabled
+- ESLint auto-fix on save
+- Prettier as default formatter
+
+## Development Workflow
+
+1. Create/modify code
+2. ESLint catches issues in real-time (IDE shows squiggles)
+3. Prettier auto-formats on save
+4. Before committing: `npm run lint:fix && npm run format`
+
+## Contributing
+
+- Follow ESLint rules (enforced on commit)
+- Code is auto-formatted on save
+- Keep components small and focused
+- Use TypeScript strict mode (no `any` unless absolutely necessary)
+
+## Architecture Notes
+
+See `.github/copilot-instructions.md` for:
+- Component patterns
+- API integration approach
+- Custom hooks conventions
+- Type definition strategy
+- Error handling patterns
+
+---
+
+**Ready for production** - strict configuration suitable for senior-level code reviews.
+
