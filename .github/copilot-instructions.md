@@ -60,32 +60,48 @@ npm run format:check # Check code formatting
 ### API Integration Pattern
 - Create typed client functions in `src/api/` (e.g., `fetchPeople.ts`)
 - Always type API responses using interfaces from `src/types/`
-- Handle errors explicitly (no silent failures)
-- Example structure: `src/api/swapi.ts` for base SWAPI client
+- Handle errors explicitly with `handleApiError` utility
+- Base client in `src/api/client.ts` provides `request()` and `requestPaginated()` helpers
+- Example: `fetchPerson(id)` returns `Promise<Person>`, uses `request<Person>(url)`
+
+**Existing API files**:
+- `src/api/client.ts` - Base Axios client with error handling
+- `src/api/fetchPeople.ts` - Person/character endpoints
+- `src/api/fetchFilms.ts` - Film endpoints
+- `src/api/fetchPlanets.ts` - Planet endpoints
 
 ### Custom Hooks Pattern
-- Extract reusable logic into hooks in `src/hooks/`
-- Naming: `useFetch*`, `use*State`, `use*Data`
-- Always return typed data
-- Example: `useCharacter(id: string)` returns `{ data, loading, error }`
+- Extract data fetching into hooks in `src/hooks/`
+- Use React Query for server state: `useQuery({ queryKey, queryFn })`
+- Naming: `usePerson()`, `useFilms()`, `usePlanetsSearch()`
+- Always return `UseQueryResult<T, unknown>` for consistency
+- Example: `usePerson(id)` enables/disables query based on id validity
+
+**Existing hooks**:
+- `src/hooks/usePerson.ts` - Single person & search
+- `src/hooks/useFilm.ts` - Single film, all films, search
+- `src/hooks/usePlanet.ts` - Single planet, all planets, search
 
 ### Type Definitions
-- All API responses must have interfaces in `src/types/`
-- Use explicit return types for functions
-- Avoid `any` type - TypeScript strict mode will catch this
-- Export types for reuse: `export interface Character { ... }`
+- All API responses typed in `src/types/swapi.ts`
+- Interfaces: `Person`, `Film`, `Planet`, `ApiResponse<T>`, `ApiError`
+- Generic `ApiResponse<T>` for paginated results with `count`, `next`, `previous`, `results`
+- Use explicit return types in all functions (no `any`)
+- All SWAPI fields are `string` except: `episode_id` (number), arrays for relations
 
 ## Critical Patterns
 
 ### Error Handling
-- API calls should catch and handle errors explicitly
-- No unhandled promise rejections
-- Return error state in hooks: `{ error: string | null }`
+- Use `handleApiError()` from `src/api/client.ts` for Axios errors
+- Returns user-friendly error messages
+- Handles: server errors (status), network errors, timeouts
+- Example: `catch (error) { const msg = handleApiError(error); }`
 
 ### State Management
-- Use React hooks (useState, useContext) for local state
-- Custom hooks for complex data fetching logic
-- Pass props down, lift state up when needed
+- **Server state** (API data): React Query (`useQuery`)
+- **UI state** (form, modals): React hooks (`useState`)
+- Query caching & deduplication handled by React Query automatically
+- Disable queries with `enabled: false` when dependencies not ready
 
 ### Routing
 - Configure routes in `src/router/` (React Router)
