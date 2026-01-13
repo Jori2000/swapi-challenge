@@ -2,9 +2,9 @@
  * Page components barrel export
  */
 
-export { HomePage } from './HomePage';
-export { PeoplePage } from './PeoplePage';
-export { PersonDetailPage } from './PersonDetailPage';
-export { FilmsPage } from './FilmsPage';
-export { FilmDetailPage } from './FilmDetailPage';
+export { HomePage } from './HomePage/HomePage';
+export { PeoplePage } from './PeoplePage/PeoplePage';
+export { PersonDetailPage } from './PersonDetail/PersonDetailPage';
+export { FilmsPage } from './FilmsPage/FilmsPage';
+export { FilmDetailPage } from './FilmDetail/FilmDetailPage';
 export { NotFoundPage } from './NotFoundPage';
