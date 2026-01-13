@@ -1,10 +1,10 @@
 # ⭐ SWAPI Challenge - Star Wars React App
 
-Ein modernes React + TypeScript + Vite Projekt zur Erkundung der Star Wars API (SWAPI). Die Anwendung demonstriert Best Practices in modernem React-Development mit strikter Typensicherheit, professionellem State Management und hochwertigem Code Quality.
+Ein React + TypeScript + Vite Projekt zur Erkundung der Star Wars API (SWAPI).
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 | Technologie | Version | Zweck |
 |---|---|---|
@@ -19,27 +19,28 @@ Ein modernes React + TypeScript + Vite Projekt zur Erkundung der Star Wars API (
 
 ---
 
-## ✨ Features
+## Features
 
-### 🎯 Implementierte Funktionalität
+### Implementierte Funktionalität
 
-#### **📋 Charaktere (People)**
-- ✅ **Paginierte Liste** - Alle 82+ Charaktere mit Pagination
+#### **Charaktere (People)**
+- ✅ **Infinite Scroll** - Automatisches Laden beim Scrollen
+- ✅ **Intersection Observer API** - Native Browser-API für Performance
 - ✅ **Suchfunktion** - Echtzeit-Suche nach Charakternamen
 - ✅ **Detailansicht** - Vollständige Charakterinformationen:
   - Name, Geburtsyear, Geschlecht
   - Größe, Gewicht, Haarfarbe, Augenfarbe
   - Zugehörige Filme als Links
 
-#### **🎬 Filme (Films)**
+#### **Filme (Films)**
 - ✅ **Komplette Liste** - Alle 7 Star Wars Filme
 - ✅ **Detailansicht** mit:
   - Opening Crawl (stilisiert mit Borders)
-  - Episode Badge (Gold #ffd700)
+  - Episode Badge
   - Regisseur & Produzent
   - Statistiken (Charaktere, Planeten, Starships, Fahrzeuge)
 
-#### **🔍 Suchfunktion**
+#### **Suchfunktion**
 - ✅ **People Search** - Echtzeit-Suche in der Charakterliste
 - ✅ **Film Search** - Suche nach Filmtiteln
 - ✅ **Planet Search** - (Infrastruktur vorbereitet)
@@ -52,14 +53,12 @@ Ein modernes React + TypeScript + Vite Projekt zur Erkundung der Star Wars API (
 - ✅ **Empty States** - "Keine Ergebnisse" Meldungen
 - ✅ **Fallback Navigation** - Back-Buttons auf allen Detail-Seiten
 
-#### **🎨 Design & UX**
+#### **Design & UX**
 - ✅ **Responsive Grid Layout** - Mobile-friendly mit CSS Grid
-- ✅ **Dark Theme Navigation** - Sticky Header mit Star Wars Styling
-- ✅ **Gold Accents** - #ffd700 für Hover/Active States
 - ✅ **Smooth Animations** - Transitions & Hover Effects (200-600ms)
 - ✅ **Accessibility** - aria-labels, semantic HTML
 
-### 🏗️ Technische Highlights
+### Technische Punkte
 
 #### **Caching & Performance**
 - ✅ **Aggressive Caching** - `staleTime: Infinity` (SWAPI data is immutable)
@@ -106,7 +105,7 @@ src/
 
 ---
 
-## 📦 Installation & Setup
+## Installation & Setup
 
 ### Voraussetzungen
 - **Node.js** >= 18.0
@@ -129,7 +128,7 @@ cp .env.example .env
 
 ---
 
-## 🚀 Entwicklung
+## Entwicklung
 
 ### Dev Server starten
 ```bash
@@ -179,7 +178,7 @@ npm run format:check
 
 ---
 
-## 🔨 Production Build
+## Production Build
 
 ### Build erstellen
 ```bash
@@ -202,7 +201,7 @@ Testet den optimierten Production Build lokal.
 
 ---
 
-## 📖 API Integration
+## API Integration
 
 ### High-Level API Functions
 
@@ -281,7 +280,7 @@ try {
 
 ---
 
-## 📊 State Management
+## State Management
 
 ### Server State (React Query)
 
@@ -315,7 +314,7 @@ const [formData, setFormData] = useState({ name: '' });
 
 ---
 
-## 🧪 Code Quality Standards
+## Code Quality Standards
 
 ### TypeScript
 - ✅ Strict mode enabled
@@ -526,7 +525,7 @@ Contributions sind willkommen! Bitte:
 
 ---
 
-## 📄 Lizenz
+## Lizenz
 
 Dieses Projekt ist lizenziert unter der MIT License - siehe `LICENSE` Datei für Details.
 
@@ -548,7 +547,7 @@ Dieses Projekt ist lizenziert unter der MIT License - siehe `LICENSE` Datei für
 
 ---
 
-## 👨‍💻 Autor
+## 👨Autor
 
 Erstellt als Teil des SWAPI Challenge Projekts.
 
@@ -565,7 +564,7 @@ Erstellt als Teil des SWAPI Challenge Projekts.
 
 ---
 
-## 📞 Support
+## Support
 
 Für Fragen oder Issues:
 1. GitHub Issues durchsuchen
@@ -575,7 +574,7 @@ Für Fragen oder Issues:
 
 ---
 
-**Happy Star Wars browsing! ⭐🚀**
+**Happy Star Wars browsing!**
 
 ## Code Quality
 
