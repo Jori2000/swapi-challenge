@@ -49,13 +49,51 @@ npm run format:check # Check code formatting
 ### Component Structure
 - Functional components with hooks only
 - Use `React.FC` or arrow functions for typing
+- Props should have explicit interfaces
 - Example:
   ```tsx
-  export const UserCard: React.FC<{ id: string }> = ({ id }) => {
+  interface UserCardProps {
+    id: string;
+  }
+
+  export const UserCard: React.FC<UserCardProps> = ({ id }) => {
     const [user, setUser] = useState(null);
     return <div>{user?.name}</div>;
   };
   ```
+
+### Common Components
+- Reusable UI components in `src/components/common/`
+- **`Loading`** - Loading indicator with optional custom text
+- **`ErrorMessage`** - Error display with optional retry button
+- Always provide fallback states in queries: loading, error, empty, success
+
+**Example usage**:
+```tsx
+import { Loading, ErrorMessage } from '../components';
+import { usePerson } from '../hooks';
+
+const { data: person, isLoading, error, refetch } = usePerson(id);
+
+if (isLoading) {
+  return <Loading text="Loading character..." />;
+}
+
+if (error) {
+  return (
+    <ErrorMessage
+      message={handleApiError(error)}
+      retry={() => refetch()}
+    />
+  );
+}
+
+if (!person) {
+  return <ErrorMessage message="Character not found" />;
+}
+
+return <div>{person.name}</div>;
+```
 
 ### API Integration Pattern
 - Use high-level API functions from `src/api/swapi.ts` in components

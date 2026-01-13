@@ -19,8 +19,8 @@ import {
   searchPlanets,
   extractIdFromUrl,
   handleApiError,
-} from './api';
-import type { Person, Film, Planet, ApiResponse } from './types/swapi';
+} from '../src/api';
+import type { Person, Film, Planet, ApiResponse } from '../src/types/swapi';
 
 // ==============================================================================
 // PEOPLE/CHARACTERS EXAMPLES
