@@ -58,17 +58,36 @@ npm run format:check # Check code formatting
   ```
 
 ### API Integration Pattern
-- Create typed client functions in `src/api/` (e.g., `fetchPeople.ts`)
+- Use high-level API functions from `src/api/swapi.ts` in components
 - Always type API responses using interfaces from `src/types/`
-- Handle errors explicitly with `handleApiError` utility
-- Base client in `src/api/client.ts` provides `request()` and `requestPaginated()` helpers
-- Example: `fetchPerson(id)` returns `Promise<Person>`, uses `request<Person>(url)`
+- Handle errors explicitly with `handleApiError()` utility
+- Base client in `src/api/client.ts` provides:
+  - Axios instance with 10-second timeout
+  - Error interceptor for logging (dev mode)
+  - Generic `request<T>()` and `requestPaginated<T>()` helpers
+  - `handleApiError()` for user-friendly error messages
 
-**Existing API files**:
-- `src/api/client.ts` - Base Axios client with error handling
-- `src/api/fetchPeople.ts` - Person/character endpoints
-- `src/api/fetchFilms.ts` - Film endpoints
-- `src/api/fetchPlanets.ts` - Planet endpoints
+**High-level API functions** (`src/api/swapi.ts`):
+- `getPeople(page?)` - Get paginated people
+- `getPerson(id)` - Get single person
+- `getFilms()` - Get all films
+- `getFilm(id)` - Get single film
+- `getPlanets(page?)` - Get paginated planets
+- `getPlanet(id)` - Get single planet
+- `searchPeople(query)`, `searchFilms(query)`, `searchPlanets(query)` - Search functions
+- `extractIdFromUrl(url)` - Helper to extract numeric ID from SWAPI URLs
+
+**Example usage**:
+```typescript
+import { getPerson, searchFilms, handleApiError } from '../api';
+
+try {
+  const luke = await getPerson('1');
+  const films = await searchFilms('empire');
+} catch (error) {
+  const msg = handleApiError(error); // User-friendly message
+}
+```
 
 ### Custom Hooks Pattern
 - Extract data fetching into hooks in `src/hooks/`
@@ -93,9 +112,10 @@ npm run format:check # Check code formatting
 
 ### Error Handling
 - Use `handleApiError()` from `src/api/client.ts` for Axios errors
-- Returns user-friendly error messages
+- Returns user-friendly error messages (never throws)
 - Handles: server errors (status), network errors, timeouts
-- Example: `catch (error) { const msg = handleApiError(error); }`
+- Example: `catch (error) { const msg = handleApiError(error); console.error(msg); }`
+- Interceptor logs all errors to console in dev mode
 
 ### State Management
 - **Server state** (API data): React Query (`useQuery`)

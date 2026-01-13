@@ -2,7 +2,7 @@
  * SWAPI Planets API
  */
 
-import { Planet, ApiResponse } from '../types/swapi';
+import type { Planet, ApiResponse } from '../types/swapi';
 import { request, requestPaginated } from './client';
 
 /**

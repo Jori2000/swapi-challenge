@@ -4,6 +4,18 @@
  */
 
 export { swapiClient, handleApiError, request, requestPaginated } from './client';
-export { fetchPerson, fetchPeople, searchPeople } from './fetchPeople';
-export { fetchFilm, fetchFilms, searchFilms } from './fetchFilms';
-export { fetchPlanet, fetchPlanets, searchPlanets } from './fetchPlanets';
+export {
+  getPeople,
+  getPerson,
+  getFilms,
+  getFilm,
+  getPlanets,
+  getPlanet,
+  searchPeople,
+  searchFilms,
+  searchPlanets,
+  extractIdFromUrl,
+} from './swapi';
+export { fetchPerson, fetchPeople } from './fetchPeople';
+export { fetchFilm } from './fetchFilms';
+export { fetchPlanet } from './fetchPlanets';

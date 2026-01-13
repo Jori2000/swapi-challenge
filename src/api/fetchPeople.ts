@@ -2,7 +2,7 @@
  * SWAPI People/Characters API
  */
 
-import { Person, ApiResponse } from '../types/swapi';
+import type { Person, ApiResponse } from '../types/swapi';
 import { request, requestPaginated } from './client';
 
 /**

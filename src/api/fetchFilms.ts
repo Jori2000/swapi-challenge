@@ -2,7 +2,7 @@
  * SWAPI Films API
  */
 
-import { Film, ApiResponse } from '../types/swapi';
+import type { Film, ApiResponse } from '../types/swapi';
 import { request, requestPaginated } from './client';
 
 /**

@@ -1,10 +1,10 @@
 /**
  * SWAPI API Client
- * Base client for Star Wars API requests
+ * Base client for Star Wars API requests with error handling
  */
 
 import axios from 'axios';
-import type { AxiosInstance } from 'axios';
+import type { AxiosInstance, AxiosError } from 'axios';
 import type { ApiResponse, ApiError } from '../types/swapi';
 
 const baseURL = import.meta.env.VITE_SWAPI_BASE_URL;
@@ -15,6 +15,9 @@ if (!baseURL) {
 
 /**
  * Axios instance configured for SWAPI
+ * - Base URL from environment variable
+ * - 10 second timeout
+ * - Error interceptor for better error handling
  */
 export const swapiClient: AxiosInstance = axios.create({
   baseURL,
@@ -22,7 +25,26 @@ export const swapiClient: AxiosInstance = axios.create({
 });
 
 /**
+ * Response interceptor for handling errors
+ */
+swapiClient.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError<ApiError>) => {
+    // Log error details in development
+    if (import.meta.env.DEV) {
+      console.error('API Error:', error.message);
+      if (error.response) {
+        console.error('Status:', error.response.status);
+        console.error('Data:', error.response.data);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+/**
  * Error handler for API requests
+ * Converts Axios errors to user-friendly messages
  * @param error - Axios error object
  * @returns User-friendly error message
  */
@@ -35,6 +57,8 @@ export const handleApiError = (error: unknown): string => {
     } else if (error.request) {
       // Request made but no response
       return 'No response from server. Check your internet connection.';
+    } else if (error.code === 'ECONNABORTED') {
+      return 'Request timeout. The server is taking too long to respond.';
     }
   }
   return 'An unexpected error occurred';
@@ -49,7 +73,6 @@ export const request = async <T>(url: string): Promise<T> => {
   const response = await swapiClient.get<T>(url);
   return response.data;
 };
-
 /**
  * Generic paginated request handler
  * @param url - API endpoint
