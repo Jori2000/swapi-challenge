@@ -6,7 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { Person, ApiResponse } from '../types/swapi';
-import { getPerson, searchPeople } from '../api/swapi';
+import { getPerson, getPeople, searchPeople } from '../api/swapi';
 
 // React Query cache configuration
 /**
@@ -17,13 +17,32 @@ const INFINITE = Infinity;
 const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
 
 /**
+ * Fetch all people (paginated)
+ * @param page - Page number (optional, default: 1)
+ * @returns Query result with paginated people
+ * @example
+ *   const { data: people, isLoading } = usePeople(1);
+ */
+export const usePeople = (
+  page?: number
+): UseQueryResult<ApiResponse<Person>, Error> => {
+  return useQuery({
+    queryKey: ['people', page],
+    queryFn: () => getPeople(page),
+    staleTime: INFINITE,
+    gcTime: TWENTY_FOUR_HOURS,
+    retry: 1,
+  });
+};
+
+/**
  * Fetch a single person by ID
  * @param id - Person ID (string). Query disabled if null/empty
  * @returns Query result with person data
  * @example
  *   const { data: person, isLoading, error } = usePerson('1');
  */
-export const usePerson = (id: string | null): UseQueryResult<Person, unknown> => {
+export const usePerson = (id: string | null): UseQueryResult<Person, Error> => {
   return useQuery({
     queryKey: ['person', id],
     queryFn: () => getPerson(id!),
@@ -41,7 +60,7 @@ export const usePerson = (id: string | null): UseQueryResult<Person, unknown> =>
  * @example
  *   const { data: results, isLoading } = usePeopleSearch('luke');
  */
-export const usePeopleSearch = (name: string): UseQueryResult<ApiResponse<Person>, unknown> => {
+export const usePeopleSearch = (name: string): UseQueryResult<ApiResponse<Person>, Error> => {
   return useQuery({
     queryKey: ['people', 'search', name],
     queryFn: () => searchPeople(name),

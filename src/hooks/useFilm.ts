@@ -58,7 +58,7 @@ export const useFilms = (): UseQueryResult<ApiResponse<Film>, unknown> => {
  * @example
  *   const { data: results, isLoading } = useFilmsSearch('empire');
  */
-export const useFilmsSearch = (title: string): UseQueryResult<ApiResponse<Film>, unknown> => {
+export const useFilmsSearch = (title: string): UseQueryResult<ApiResponse<Film>, Error> => {
   return useQuery({
     queryKey: ['films', 'search', title],
     queryFn: () => searchFilms(title),
