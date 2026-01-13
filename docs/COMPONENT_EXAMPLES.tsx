@@ -29,7 +29,7 @@ export const CustomLoadingExample: React.FC = () => {
 /**
  * Loading in a real component with React Query
  */
-export const CharacterDetailWithLoading: React.FC<{ personId: number }> = ({ personId }) => {
+export const CharacterDetailWithLoading: React.FC<{ personId: string }> = ({ personId }) => {
   const { data: person, isLoading, error } = usePerson(personId);
 
   if (isLoading) {
@@ -79,7 +79,7 @@ export const ErrorWithRetryExample: React.FC = () => {
 /**
  * Error in a real component with retry
  */
-export const CharacterDetailWithRetry: React.FC<{ personId: number }> = ({ personId }) => {
+export const CharacterDetailWithRetry: React.FC<{ personId: string }> = ({ personId }) => {
   const { data: person, isLoading, error, refetch } = usePerson(personId);
 
   if (isLoading) {
@@ -143,7 +143,7 @@ export const DataFetchingPattern: React.FC<{
  * Using the pattern in a real component
  */
 export const FilmListExample: React.FC = () => {
-  const { data: films, isLoading, error, refetch } = usePerson(1); // Using wrong hook for demo
+  const { data: films, isLoading, error, refetch } = usePerson("1"); // Using wrong hook for demo
 
   return (
     <DataFetchingPattern isLoading={isLoading} error={error} data={films} onRetry={() => refetch()}>

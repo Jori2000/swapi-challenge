@@ -1,29 +1,28 @@
-import { useState } from 'react';
-import viteLogo from '/vite.svg';
-import reactLogo from './assets/react.svg';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+// Create QueryClient with optimized defaults for SWAPI (static data)
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity, // SWAPI data is static, never stale
+      gcTime: 24 * 60 * 60 * 1000, // Keep cache for 24 hours
+      retry: 1, // Retry failed requests once
+    },
+  },
+});
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>SWAPI Challenge</h1>
+        <p>React + TypeScript + Vite with Star Wars API</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+
+      {/* React Query DevTools for debugging (only in development) */}
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+    </QueryClientProvider>
   );
 }
 
